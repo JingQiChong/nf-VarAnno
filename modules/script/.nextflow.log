@@ -1,0 +1,11 @@
+May-02 11:21:47.287 [main] DEBUG nextflow.cli.Launcher - $> nextflow run main.nf --path /exports/eddie/scratch/s1616612/Annotation_pipeline_4.10/temp_data/xaa
+May-02 11:21:47.543 [main] INFO  nextflow.cli.CmdRun - N E X T F L O W  ~  version 20.04.1
+May-02 11:21:47.604 [main] DEBUG nextflow.cli.Launcher - Operation aborted
+nextflow.exception.AbortOperationException: Not a valid project name: main.nf
+	at nextflow.scm.AssetManager.resolveName(AssetManager.groovy:246)
+	at nextflow.scm.AssetManager.build(AssetManager.groovy:121)
+	at nextflow.scm.AssetManager.<init>(AssetManager.groovy:105)
+	at nextflow.cli.CmdRun.getScriptFile(CmdRun.groovy:331)
+	at nextflow.cli.CmdRun.run(CmdRun.groovy:245)
+	at nextflow.cli.Launcher.run(Launcher.groovy:460)
+	at nextflow.cli.Launcher.main(Launcher.groovy:642)
