@@ -6,29 +6,12 @@
  
 nextflow.enable.dsl = 2
 
-/*
- * Define the default parameters
- */
-
-//params.path = "$baseDir/*.vcf"
-//params.flanking_len = 2
-//params.ref_file = "$baseDir/data/hg38.fa.gz"
-//params.species = 'human'
-//params.genome_version = 'hg38'
-//params.dataProvider = "EnsDb"
-//params.version = 103
-//params.flag = 0
-//params.split_len = 10000
-
 
 /*
  * Import modules
  */
 
 include {
- 	getParams;
-	data_downloading;
- 	formatting;
  	flankingSequence;
  	distanceToTSS;
  	distanceToCpG;
@@ -38,6 +21,12 @@ include {
     distanceToRegulatoryFeatures;
 	getVep
 } from '../processes/main_annotation_processes.nf'
+
+include {
+	getParams;
+	data_downloading;
+	formatting;
+} from '../processes/pre_processing.nf'
 
 /*
  * Main pipeline

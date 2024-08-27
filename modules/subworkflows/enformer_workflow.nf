@@ -6,16 +6,13 @@
  
 nextflow.enable.dsl = 2
 
-//params.path = "$baseDir/*.vcf"
-//params.enformer_prefix = 'temp'
-
 include{
     getVariantScore
 } from '../processes/enformer_processes.nf'
 
 include{
     formatting
-} from '../processes/main_annotation_processes.nf'
+} from '../processes/pre_processing.nf'
 
 workflow enformer {
     formatting(params.path)
