@@ -16,6 +16,7 @@ To run the annotation pipeline, you'll need:
   # Example of a BED file
   chr1  12184213  12184214  chr1_12184214_C_T
   chr17  15164948  15164949  chr17_15164949_C_T
+  ```
 2. The **species and genome assembly version** should be specified. The pipeline will automatically obtain other parameters required to retrieve relevant source data for each species. However, this feature is currently available only for human, cattle, pig, dog, and sheep. For other species, users need to specify the parameters manually.
 3. The essential source data for variant annotation can be downloaded automatically by the pipeline based on the species and genome assembly version specified by the user. This includes the reference genome, VEP cache, and conservation BigWig files (for human and cattle only).
 
