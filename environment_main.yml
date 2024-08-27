@@ -16,3 +16,4 @@ dependencies:
   - python
   - pandas
   - pybigwig
+  - bedtools
