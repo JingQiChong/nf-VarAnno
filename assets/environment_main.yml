@@ -1,0 +1,19 @@
+name: bioinformatics_env
+channels:
+  - conda-forge
+  - bioconda
+  - defaults
+dependencies:
+  - r-base=4.1.3
+  - r-tidyverse
+  - bioconductor-annotationhub
+  - bioconductor-regioner
+  - bioconductor-chippeakanno
+  - ensembl-vep=105.0
+
+  - bcftools
+  - samtools
+  - python
+  - pandas
+  - pybigwig
+  - bedtools
