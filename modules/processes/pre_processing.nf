@@ -106,20 +106,13 @@ process data_downloading {
         # Download and prepare the genome file
         if [ ! -f $baseDir/data/${par['CpG_species']}.fa.gz ]; then
             echo "Reference file not found, downloading..."
-            wget --continue --no-verbose -O $baseDir/data/${par['CpG_species']}.fa.gz ${fastaUrl}
-        else
-            echo "Reference file already exists, skipping download."
-        fi
-
-        if [ -f $baseDir/data/${par['CpG_species']}.fa.gz ] && [ ! -f $baseDir/data/${par['CpG_species']}.fa.gz.fai ]; then
-            echo "Recompressing genome.fa.gz with bgzip..."
+            wget --continue --tries=5 --no-verbose -O $baseDir/data/${par['CpG_species']}.fa.gz ${fastaUrl}
             gunzip -c $baseDir/data/${par['CpG_species']}.fa.gz | bgzip -c > $baseDir/data/${par['CpG_species']}.fa.bgz
-            echo "Indexing the genome.fa.bgz..."
             samtools faidx $baseDir/data/${par['CpG_species']}.fa.bgz
             mv $baseDir/data/${par['CpG_species']}.fa.bgz $baseDir/data/${par['CpG_species']}.fa.gz
             mv $baseDir/data/${par['CpG_species']}.fa.bgz.fai $baseDir/data/${par['CpG_species']}.fa.gz.fai
         else
-            echo "Index file already exists, skipping indexing."
+            echo "Reference file already exists, skipping download."
         fi
 
         # Download the VEP cache if it doesn't exist
