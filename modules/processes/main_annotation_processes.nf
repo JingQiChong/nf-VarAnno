@@ -16,7 +16,7 @@ process flankingSequence {
 
 	script:
 	"""
-	python $baseDir/modules/script/getFlankingSequence.py ${data_bed_sorted} ${params.flanking_len} ${par['CpG_species']}.fa.gz flanking_annotation_result.txt
+	python $baseDir/modules/script/getFlankingSequence.py ${data_bed_sorted} ${params.flanking_len} $baseDir/data/${par['CpG_species']}.fa.gz flanking_annotation_result.txt
 	"""
 
 	stub:

@@ -41,8 +41,9 @@ def process_variants(data_path, flanking_len, reference_file, output_path):
         if pd.isna(row['start']):
             flanking_sequences.append(float('nan'))
         else:
+            chrom_cleaned = row['chrom'].replace('chr', '')
             try:
-                flanking_sequence = extract_flanking_sequence(row['chrom'], row['end'], flanking_len, reference_file)
+                flanking_sequence = extract_flanking_sequence(chrom_cleaned, row['end'], flanking_len, reference_file)
                 flanking_sequences.append(flanking_sequence)
             except subprocess.CalledProcessError as e:
                 print(f"Error processing variant {row['variant_id']} at {row['chrom']}:{row['end']}: {e}", file=sys.stderr)
