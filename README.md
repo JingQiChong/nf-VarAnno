@@ -25,24 +25,31 @@ To run the annotation pipeline, you'll need:
 # Quick start
 After installing Nextflow and Anaconda, you can run the annotation pipeline to annotate test data for humans by typing the following command:
 ```bash
-nextflow run evotools/nf-VarAnno --species human --genome_version hg38 --path data/test.bed
+nextflow run evotools/nf-VarAnno --species human --genome_version hg38
 ```
-This command will use Anaconda to obtain the required dependencies and output general annotations for the test variants. 
+This command will use Anaconda to install the required dependencies and generate general annotations for the test variants located in the data folder. If you'd like to annotate your own variants, you can specify the '--path' parameter to point to your variant file. 
 
 To annotate data for cattle, simply use the following command:
 ```bash
-nextflow run evotools/nf-VarAnno --species cattle --genome_version bosTau9 --path data/test.bed
+nextflow run evotools/nf-VarAnno --species cattle --genome_version bosTau9
 ```
 The pipeline can annotate 1,000 human variants in 30 minutes (excluding the time required for setting up dependencies and downloading data) when tested using 4 computing cores, each with 16GB of memory. The compute cluster operates on the Altair Grid Engine batch system and runs Scientific Linux 7.
 
 # Output
-The output of the pipeline includes results for various types of annotations. Below is an example of conservation annotation results for some human variants:
+The output of the pipeline includes results for various types of annotations. Below are examples of conservation and flanking sequence annotation results for some cattle variants:
 ```bash
-chrom  start  end  variant_id  phastCons100way  phyloP100way  phastCons30way  phyloP30way
-chr1  12184213  12184214  chr1_12184214_C_T  0.0  -2.997999906539917  0.020999999716877937  -1.440999984741211
-chr1  15124315  15124316  chr1_15124316_G_A  0.0010000000474974513  -0.6859999895095825  0.0010000000474974513  -0.7400000095367432
-chr17  15164948  15164949  chr17_15164949_C_T  0.0  0.10499999672174454  0.0010000000474974513  -0.3370000123977661
+chrom	start	end	variant_id	phastCons241way	phyloP241way
+chr1	12184213	12184214	chr1_12184214_C_T	0.0	-0.6620000004768372
+chr1	15124315	15124316	chr1_15124316_G_A	0.014000000432133675	1.062000036239624
+chr17	15164948	15164949	chr17_15164949_C_T	0.0	-0.2770000100135803
 ```
+```bash
+chrom	start	end	variant_id	flanking_sequence
+chr1	12184213	12184214	chr1_12184214_C_T	GGTGT
+chr1	15124315	15124316	chr1_15124316_G_A	GAAAT
+chr17	15164948	15164949	chr17_15164949_C_T	ATTGG
+```
+
 
 
 
