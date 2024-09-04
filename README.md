@@ -3,6 +3,12 @@ A cross-species variant annotation pipeline built with Nextflow. The pipeline of
 
 ![Pipeline structure](images/pipeline_structure.jpg)
 
+# Table of contents
+- [Requirements](#Requirements)
+- [Input](#Input)
+- [Quick start](#Quick start)
+- [Output](#Output)
+
 # Requirements
 The workflow is developed using Nextflow with an Anaconda environment. To run this pipeline, you need to install:
 1. [Anaconda](https://www.anaconda.com/products/individual)
