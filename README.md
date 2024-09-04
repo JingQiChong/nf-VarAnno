@@ -9,7 +9,7 @@ The workflow is developed using Nextflow with an Anaconda environment. To run th
 2. [Nextflow](https://www.nextflow.io/)
 3. [Java 11 (or later, up to 22)](http://www.oracle.com/technetwork/java/javase/downloads/index.html)
 
-Our pipeline is tested on Nextflow 23.10.1, Anaconda 24.1.2, Openjdk 22.0.0
+Our pipeline has been tested with Nextflow 23.10.1, Anaconda 24.1.2, and Openjdk 22.0.0.
 
 # Input
 To run the annotation pipeline, you'll need:
