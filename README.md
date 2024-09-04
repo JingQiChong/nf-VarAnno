@@ -27,7 +27,7 @@ After installing Nextflow and Anaconda, you can run the annotation pipeline to a
 ```bash
 nextflow run evotools/nf-VarAnno --species human --genome_version hg38
 ```
-This command will use Anaconda to install the required dependencies and generate general annotations for the test variants located in the data folder. If you'd like to annotate your own variants, you can specify the '''bash --path ''' parameter to point to your variant file. 
+This command will use Anaconda to install the required dependencies and generate general annotations for the test variants located in the data folder. If you'd like to annotate your own variants, you can specify the `--path` parameter to point to your variant file. 
 
 To annotate data for cattle, simply use the following command:
 ```bash
