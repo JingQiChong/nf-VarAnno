@@ -33,7 +33,16 @@ To annotate data for cattle, simply use the following command:
 ```bash
 nextflow run evotools/nf-VarAnno --species cattle --genome_version bosTau9 --path data/test.bed
 ```
-The pipeline can annotate 1,000 variants in 30 minutes (excluding the time required for setting up dependencies and downloading data) when tested using 4 computing cores, each with 16GB of memory. The compute cluster operates on the Altair Grid Engine batch system and runs Scientific Linux 7.
+The pipeline can annotate 1,000 human variants in 30 minutes (excluding the time required for setting up dependencies and downloading data) when tested using 4 computing cores, each with 16GB of memory. The compute cluster operates on the Altair Grid Engine batch system and runs Scientific Linux 7.
+
+# Output
+The output of the pipeline includes results for various types of annotations. Below is an example of conservation annotation results for some human variants:
+```bash
+chrom  start  end  variant_id  phastCons100way  phyloP100way  phastCons30way  phyloP30way
+chr1  12184213  12184214  chr1_12184214_C_T  0.0  -2.997999906539917  0.020999999716877937  -1.440999984741211
+chr1  15124315  15124316  chr1_15124316_G_A  0.0010000000474974513  -0.6859999895095825  0.0010000000474974513  -0.7400000095367432
+chr17  15164948  15164949  chr17_15164949_C_T  0.0  0.10499999672174454  0.0010000000474974513  -0.3370000123977661
+```
 
 
 
