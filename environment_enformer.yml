@@ -1,0 +1,13 @@
+name: nf-VarAnno-Enformer
+channels:
+  - conda-forge
+  - defaults
+dependencies:
+  - python=3.9.7
+  - pandas
+  - dm-sonnet
+  - kipoiseq
+  - numpy
+  - tensorflow 
+  - tensorflow-hub
+  - joblib

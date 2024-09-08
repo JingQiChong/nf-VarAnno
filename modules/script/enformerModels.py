@@ -1,5 +1,6 @@
 # @title `Enformer`, `EnformerScoreVariantsNormalized`, `EnformerScoreVariantsPCANormalized`,
 import tensorflow as tf
+#assert tf.config.list_physical_devices('GPU')
 tf.config.run_functions_eagerly(True)
 import tensorflow_hub as hub
 import joblib
@@ -9,9 +10,6 @@ from kipoiseq import Interval
 import pyfaidx
 import pandas as pd
 import numpy as np
-import matplotlib.pyplot as plt
-import matplotlib as mpl
-import seaborn as sns
 
 SEQUENCE_LENGTH = 393216
 

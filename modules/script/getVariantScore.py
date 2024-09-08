@@ -2,15 +2,12 @@
 
 import tensorflow as tf
 import tensorflow_hub as hub
-import joblib
 import gzip
 import kipoiseq
 from kipoiseq import Interval
 import pyfaidx
 import pandas as pd
 import numpy as np
-import matplotlib.pyplot as plt
-import seaborn as sns
 from enformerModels import Enformer
 from variantProcessing import FastaStringExtractor, one_hot_encode
 import sys
@@ -20,14 +17,13 @@ import os
 SEQUENCE_LENGTH = 393216
 TARGETS_TXT_URL = 'https://raw.githubusercontent.com/calico/basenji/master/manuscripts/cross2020/targets_human.txt'
 MODEL_PATH = 'https://tfhub.dev/deepmind/enformer/1'
-FASTA_FILE_PATH = '/exports/eddie/scratch/s1616612/Annotation_pipeline_230618/data/genome.fa'
+#FASTA_FILE_PATH = '/exports/eddie/scratch/s1616612/Annotation_pipeline_230618/data/genome.fa'
 
 # Load targets and model
 df_targets = pd.read_csv(TARGETS_TXT_URL, sep='\t')
 model = Enformer(MODEL_PATH)
-fasta_extractor = FastaStringExtractor(FASTA_FILE_PATH)
 
-def get_diff_vec(chrom, pos, ref, alt, variant_id):
+def get_diff_vec(chrom, pos, ref, alt, variant_id, fasta_extractor):
     """
     Calculate the difference vector between reference and alternate sequences using the Enformer model.
     
@@ -71,20 +67,20 @@ def get_diff_vec(chrom, pos, ref, alt, variant_id):
     return diff_df, diff_abs_df, diff_proportional_df
 
 def main():
-    if len(sys.argv) != 5:
-        print("Usage: script.py <input_path> <output_path> <output_path_abs> <output_path_prop>")
-        sys.exit(1)
     
     input_path = sys.argv[1]
     output_path = sys.argv[2]
     output_path_abs = sys.argv[3]
     output_path_prop = sys.argv[4]
+    FASTA_FILE_PATH = sys.argv[5]
 
     if not os.path.exists(input_path):
         print(f"Error: Input file '{input_path}' does not exist.")
         sys.exit(1)
     
     data = pd.read_table(input_path, sep='\t')
+    pyfaidx.Faidx(FASTA_FILE_PATH)
+    fasta_extractor = FastaStringExtractor(FASTA_FILE_PATH)
     
     result = pd.DataFrame()
     result_abs = pd.DataFrame()
@@ -92,7 +88,7 @@ def main():
     
     for index, row in data.iterrows():
         diff_vec, diff_vec_abs, diff_vec_proportional = get_diff_vec(
-            row['chrom'], row['pos'], row['ref'], row['alt'], row['id']
+            row['chrom'], row['pos'], row['ref'], row['alt'], row['id'], fasta_extractor
         )
         print(f"Processing variant {index + 1}/{len(data)}: {row['id']}")
         

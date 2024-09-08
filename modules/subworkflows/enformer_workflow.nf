@@ -11,10 +11,12 @@ include{
 } from '../processes/enformer_processes.nf'
 
 include{
+    getParams;
     formatting
 } from '../processes/pre_processing.nf'
 
 workflow enformer {
+    getParams()
     formatting(params.path)
-    getVariantScore(params.enformer_prefix, formatting.out.enformer_ch)
+    getVariantScore(params.enformer_prefix, formatting.out.enformer_ch, getParams.out)
 }
