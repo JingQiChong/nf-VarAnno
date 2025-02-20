@@ -19,7 +19,8 @@ include {
  	distanceToChromatin;
  	geneDensity;
     distanceToRegulatoryFeatures;
-	getVep
+	getVep;
+	distanceToMotif;
 } from '../processes/main_annotation_processes.nf'
 
 include {
@@ -46,13 +47,15 @@ workflow main_annotation {
  	distanceToCpG.out.collectFile(name: 'CpG_' + params.path.split('/')[-1], keepHeader: true, skip: 1, sort: true, storeDir: 'Annotation_result')
  	conservationScore(chunks_ch, data_downloading.out.download_complete_ch)
  	conservationScore.out.collectFile(name: 'conservation_' + params.path.split('/')[-1], keepHeader: true, skip: 1, sort: true, storeDir: 'Annotation_result')
- 	distanceToChromatin(chunks_ch)
+ 	distanceToChromatin(chunks_ch, params.cattle_chromatin_dir)
     distanceToChromatin.out.collectFile(name: 'chromatin_' + params.path.split('/')[-1], keepHeader: true, skip: 1, sort: true, storeDir: 'Annotation_result')
 	geneDensity(getParams.out, chunks_ch)
  	geneDensity.out.collectFile(name: 'density_' + params.path.split('/')[-1], keepHeader: true, skip: 1, sort: true, storeDir: 'Annotation_result')
 	distanceToRegulatoryFeatures(chunks_ch)
  	distanceToRegulatoryFeatures.out.collectFile(name: 'regulatory_' + params.path.split('/')[-1], keepHeader: true, skip: 1, sort: true, storeDir: 'Annotation_result')
 	getVep(getParams.out, formatting.out.vep_ch, data_downloading.out.download_complete_ch)
+	distanceToMotif(params.motif_list, chunks_ch, params.motif_file_dir)
+	distanceToMotif.out.collectFile(name: 'motif_' + params.path.split('/')[-1], keepHeader: true, skip: 1, sort: true, storeDir: 'Annotation_result')
 }
 
 

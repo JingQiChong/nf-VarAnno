@@ -14,10 +14,11 @@ bed_file <- args[4]
 output_path <- args[5]
 
 # Update AnnotationHub cache path
+
 moveFiles<-function(package){
     olddir <- path.expand(rappdirs::user_cache_dir(appname=package))
     newdir <- tools::R_user_dir(package, which="cache")
-    dir.create(path=newdir, recursive=TRUE)
+    dir.create(path=newdir, recursive=TRUE)   
     files <- list.files(olddir, full.names =TRUE)
     moveres <- vapply(files,
     FUN=function(fl){

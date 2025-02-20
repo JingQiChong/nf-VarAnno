@@ -116,25 +116,40 @@ process distanceToChromatin {
 
  	input:
  	file data_bed_sorted
+	path chromatin_dir
 
  	output:
  	file 'chromatin.txt'
 
  	when:
- 	params.species == 'human'
+ 	params.species == 'human' || params.species == 'cattle'
 
  	script:
- 	"""
- 	awk '{print \$NF}' $baseDir/data/bedFiles.txt > path.txt
- 	cat ${data_bed_sorted} | awk ' BEGIN{ print "chrom", "start", "end", "variant_id"}{ print \$1, \$2, \$3, \$4 }' > chromatin.txt
- 	cat path.txt | while read LINE
- 	do
- 	wget -O- \$LINE | gunzip -c | sort -k1,1 -k2,2n > chromatin.bed
- 	bedtools closest -a ${data_bed_sorted} -b chromatin.bed -t first -D b | awk -v array=\$LINE '{OFS="\\t"} BEGIN{OFS = "_"; split(array, a, "/"); print a[9], a[8], "enriched_site"}{ print \$NF}' > temp.txt
- 	awk 'NR == FNR {a[NR] = \$0;next} {print a[FNR],\$0}' chromatin.txt temp.txt > result.txt
- 	cat result.txt > chromatin.txt
- 	done
- 	"""
+	if (params.species == 'human')
+ 		""" 		
+		# Initialize chromatin.txt with the base data and headers
+		cat ${data_bed_sorted} | awk 'BEGIN {OFS="\\t"; print "chrom", "start", "end", "variant_id"} {print \$1, \$2, \$3, \$4}' > chromatin.txt
+		cat $baseDir/data/path.txt | while read LINE
+		do
+   		# Extract the name part after GRCh38 and before .peaks
+    	name=\$(echo "\$LINE" | awk -F'GRCh38' '{split(\$2, a, ".peaks"); print a[1]}' | sed 's/^\\.//')
+    	# Download, decompress, and sort the chromatin data
+    	wget -O- "\$LINE" | gunzip -c | sort -k1,1 -k2,2n > chromatin.bed
+    	# Use bedtools to calculate the closest distances
+    	bedtools closest -a ${data_bed_sorted} -b chromatin.bed -t first -D b | awk -v col_name="\$name" 'BEGIN {OFS="\\t"} NR==1 {print col_name} {print \$NF}' > temp_distances.txt
+    	# Add the new column to chromatin.txt
+    	paste chromatin.txt temp_distances.txt > result.txt
+   		mv result.txt chromatin.txt
+		done
+ 		"""
+	else if (params.species == 'cattle')
+		"""
+		python $baseDir/modules/script/distance_to_chromatin_cattle.py \
+			--input_bed ${data_bed_sorted} --chromatin_dir ${chromatin_dir} \
+			--output_file chromatin.txt
+		"""
+	else
+		error "Chromatin data unavailable for this species."
 
 	stub:
 	"""
@@ -222,4 +237,27 @@ process getVep {
 	  """
 }
 
+/*
+ * Process 8: Distance to motifs (human and cattle)  
+ */
+process distanceToMotif {
+	publishDir 'Annotation_result', mode: 'copy'
+
+	input:
+	path motif_list
+	file data_bed_sorted
+	path motif_file_dir
+
+	output:
+	file "motif_annotation_result.txt"
+
+	script:
+	"""
+	python $baseDir/modules/script/distance_to_motifs.py \
+		--motif_list_sorted ${motif_list} \
+		--variant_file ${data_bed_sorted} \
+		--output_file motif_annotation_result.txt \
+		--motif_file_dir ${motif_file_dir}
+	"""
+}
 
